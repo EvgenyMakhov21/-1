@@ -154,16 +154,23 @@ class DataSet:
 
 
 class InputConnect:
-    def __init__(selfies):
-        selfies.names_file = input('Введите название файла: ')
-        selfies.names_vacancies = input('Введите название профессии: ')
+    def __init__(selfies, names_file = None, names_vacancies = None):
+        selfies.names_file = input('Введите название файла: ') if names_file is None else names_file
+        selfies.names_vacancies = input('Введите название профессии: ') if names_vacancies is None else names_vacancies
         # selfies.names_file = '../data/vacancies_by_year.csv'
         # selfies.names_vacancies = 'Программист'
+    def gen (selfies):
+        statist1, statist2, statist3, statist4, statist5, statist6 = selfies.gen_stats(True)
+        selfies.gen_vac(statist1, statist2, statist3, statist4, statist5, statist6)
 
+    def gen_stats(selfies, is_print = False):
         setData = DataSet(selfies.names_file, selfies.names_vacancies)
         statist1, statist2, statist3, statist4, statist5, statist6 = setData.stats()
-        setData.printstats(statist1, statist2, statist3, statist4, statist5, statist6)
+        if is_print:
+            setData.printstats(statist1, statist2, statist3, statist4, statist5, statist6)
+        return statist1,statist2,statist3,statist4,statist5,statist6
 
+    def gen_vac(selfies, statist3, statist1, statist2, statist4, statist6, statist5):
         report = Report(selfies.names_vacancies, statist1, statist2, statist3, statist4, statist5, statist6)
         report.excel()
         report.image()
@@ -361,4 +368,5 @@ class Report:
 
 
 if __name__ == '__main__':
-    InputConnect()
+    inputconnect = InputConnect()
+    inputconnect.gen()
